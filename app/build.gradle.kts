@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -56,4 +58,34 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    // --- Navigation ---
+    implementation(libs.androidx.navigation.compose)
+
+    // --- Hilt ---
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler) // 👈 ksp en lugar de kapt
+    implementation(libs.hilt.navigation.compose)
+
+    // --- Retrofit ---
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.gson)
+    implementation(libs.okhttp.logging)
+
+    // --- Coil (images) ---
+    implementation(libs.coil.compose)
+
+    // --- Coroutines ---
+    implementation(libs.coroutines.android)
+
+    // --- Lifecycle ---
+    implementation(libs.lifecycle.viewmodel.compose)
+    implementation(libs.lifecycle.runtime.compose)
+
+    // --- Testing ---
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+
+    // --- Debug ---
+    debugImplementation(libs.androidx.ui.tooling)
+
 }
