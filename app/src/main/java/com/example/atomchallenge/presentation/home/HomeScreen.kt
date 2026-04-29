@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,15 +27,49 @@ fun HomeScreen(
     onCountryClick: (String) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()
 
-    when (val state = uiState) {
-        is HomeUiState.Loading -> LoadingContent()
-        is HomeUiState.Success -> CountryListContent(
-            countries = state.countries,
-            onCountryClick = onCountryClick
+    Column(modifier = Modifier.fillMaxSize()) {
+        SearchBar(
+            query = searchQuery,
+            onQueryChange = viewModel::onSearchQueryChanged
         )
-        is HomeUiState.Error -> ErrorContent(message = state.message)
+
+        when (val state = uiState) {
+            is HomeUiState.Loading -> LoadingContent()
+            is HomeUiState.Success -> CountryListContent(
+                countries = state.countries,
+                onCountryClick = onCountryClick
+            )
+            is HomeUiState.Error -> ErrorContent(
+                message = state.message,
+                onRetry = viewModel::retry
+            )
+        }
     }
+}
+
+@Composable
+private fun SearchBar(
+    query: String,
+    onQueryChange: (String) -> Unit
+) {
+    OutlinedTextField(
+        value = query,
+        onValueChange = onQueryChange,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        placeholder = { Text("Search Country...") },
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Default.Search,
+                contentDescription = "Search"
+            )
+        },
+        singleLine = true,
+        shape = RoundedCornerShape(12.dp)
+    )
 }
 
 @Composable
@@ -47,15 +83,31 @@ private fun LoadingContent() {
 }
 
 @Composable
-private fun ErrorContent(message: String) {
+private fun ErrorContent(
+    message: String,
+    onRetry: () -> Unit
+) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Text(
-            text = "Error: $message",
-            color = MaterialTheme.colorScheme.error
-        )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Text(
+                text = "Something bad happened",
+                style = MaterialTheme.typography.titleMedium
+            )
+            Text(
+                text = message,
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodySmall
+            )
+            Button(onClick = onRetry) {
+                Text("Retry")
+            }
+        }
     }
 }
 
@@ -64,9 +116,22 @@ private fun CountryListContent(
     countries: List<Country>,
     onCountryClick: (String) -> Unit
 ) {
+    if (countries.isEmpty()) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "Countries not found",
+                style = MaterialTheme.typography.bodyLarge
+            )
+        }
+        return
+    }
+
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(
