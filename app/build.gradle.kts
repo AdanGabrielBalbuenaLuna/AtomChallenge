@@ -63,7 +63,7 @@ dependencies {
 
     // --- Hilt ---
     implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler) // 👈 ksp en lugar de kapt
+    ksp(libs.hilt.compiler) // ksp en lugar de kapt
     implementation(libs.hilt.navigation.compose)
 
     // --- Retrofit ---
@@ -87,5 +87,9 @@ dependencies {
 
     // --- Debug ---
     debugImplementation(libs.androidx.ui.tooling)
+
+    // -- Test --
+    testImplementation(libs.mockk)
+    testImplementation(libs.coroutines.test)
 
 }

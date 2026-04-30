@@ -31,7 +31,6 @@ class HomeViewModel @Inject constructor(
             _uiState.value = HomeUiState.Loading
             try {
                 allCountries = getCountriesUseCase()
-                    .sortedBy { it.name }
                 _uiState.value = HomeUiState.Success(allCountries)
             } catch (e: Exception) {
                 _uiState.value = HomeUiState.Error(
