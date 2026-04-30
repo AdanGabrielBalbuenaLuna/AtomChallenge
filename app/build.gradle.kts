@@ -92,4 +92,7 @@ dependencies {
     testImplementation(libs.mockk)
     testImplementation(libs.coroutines.test)
 
+    // -- Iconos --
+    implementation(libs.androidx.material.icons.extended)
+
 }
