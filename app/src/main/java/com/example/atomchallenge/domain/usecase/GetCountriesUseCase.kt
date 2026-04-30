@@ -8,5 +8,6 @@ class GetCountriesUseCase(
 ) {
     suspend operator fun invoke(): List<Country> {
         return repository.getCountries()
+            .sortedBy { it.name }
     }
 }
