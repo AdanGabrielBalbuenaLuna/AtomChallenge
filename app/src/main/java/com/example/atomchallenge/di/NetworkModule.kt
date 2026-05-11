@@ -3,8 +3,6 @@ package com.example.atomchallenge.di
 import com.example.atomchallenge.data.remote.api.CountryApiService
 import com.example.atomchallenge.data.repository.CountryRepositoryImpl
 import com.example.atomchallenge.domain.repository.CountryRepository
-import com.example.atomchallenge.domain.usecase.GetCountriesUseCase
-import com.example.atomchallenge.domain.usecase.GetCountryDetailUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -54,21 +52,4 @@ object NetworkModule {
     ): CountryRepository {
         return CountryRepositoryImpl(apiService)
     }
-
-    @Provides
-    @Singleton
-    fun provideGetCountriesUseCase(
-        repository: CountryRepository
-    ): GetCountriesUseCase {
-        return GetCountriesUseCase(repository)
-    }
-
-    @Provides
-    @Singleton
-    fun provideGetCountryDetailUseCase(
-        repository: CountryRepository
-    ): GetCountryDetailUseCase {
-        return GetCountryDetailUseCase(repository)
-    }
 }
-
