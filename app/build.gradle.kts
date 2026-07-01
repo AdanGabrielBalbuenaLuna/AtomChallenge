@@ -43,6 +43,18 @@ android {
 
 dependencies {
 
+    // 👇 app es el ÚNICO módulo que ve el árbol completo
+    // ❓ Por qué: necesita ensamblar todo el grafo de Hilt
+    //    (RepositoryModule necesita ver domain.CountryRepository
+    //    Y data.CountryRepositoryImpl al mismo tiempo)
+    implementation(project(":feature:countries:presentation"))
+    implementation(project(":feature:countries:domain"))
+    implementation(project(":feature:countries:data"))
+
+    implementation(project(":core:network"))
+    implementation(project(":core:database"))
+    implementation(project(":core:ui"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

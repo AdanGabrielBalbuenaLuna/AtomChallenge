@@ -21,4 +21,10 @@ dependencyResolutionManagement {
 
 rootProject.name = "AtomChallenge"
 include(":app")
+include(":core:network")
+include(":core:database")
+include(":core:ui")
+include(":feature:countries:data")
+include(":feature:countries:domain")
+include(":feature:countries:presentation")
  
